@@ -1,0 +1,29 @@
+{
+  "name": "av-labor-coordinator-backend",
+  "version": "1.0.0",
+  "description": "Backend API for AV Labor Coordinator - Event technician scheduling and billing",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "labor",
+    "scheduling",
+    "technician",
+    "billing",
+    "av",
+    "events"
+  ],
+  "author": "AV Coordinator",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "better-sqlite3": "^9.2.2",
+    "uuid": "^9.0.1",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2"
+  },
+  "devDependencies": {}
+}

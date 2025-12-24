@@ -1,0 +1,1425 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Labor Coordination App API",
+    "version": "1.0.0",
+    "description": "Complete API specification for AV Labor Coordinator event scheduling and invoicing system",
+    "contact": {
+      "name": "Development Team"
+    },
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001/api",
+      "description": "Development server"
+    },
+    {
+      "url": "https://api.labor-app.com/api",
+      "description": "Production server (future)"
+    }
+  ],
+  "paths": {
+    "/events": {
+      "get": {
+        "operationId": "listEvents",
+        "summary": "List all events",
+        "tags": ["Events"],
+        "responses": {
+          "200": {
+            "description": "Array of all events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createEvent",
+        "summary": "Create a new event",
+        "tags": ["Events"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Event created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/events/{id}": {
+      "get": {
+        "operationId": "getEvent",
+        "summary": "Get specific event",
+        "tags": ["Events"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateEvent",
+        "summary": "Update event",
+        "tags": ["Events"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteEvent",
+        "summary": "Delete event (cascades to requirements and assignments)",
+        "tags": ["Events"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/technicians": {
+      "get": {
+        "operationId": "listTechnicians",
+        "summary": "List all technicians",
+        "tags": ["Technicians"],
+        "responses": {
+          "200": {
+            "description": "Array of all technicians",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Technician"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createTechnician",
+        "summary": "Create a new technician",
+        "tags": ["Technicians"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechnicianInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Technician created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Technician"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/technicians/{id}": {
+      "get": {
+        "operationId": "getTechnician",
+        "summary": "Get specific technician",
+        "tags": ["Technicians"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Technician found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Technician"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Technician not found"
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateTechnician",
+        "summary": "Update technician",
+        "tags": ["Technicians"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechnicianUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Technician updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Technician"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteTechnician",
+        "summary": "Delete technician",
+        "tags": ["Technicians"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Technician deleted"
+          }
+        }
+      }
+    },
+    "/events/{eventid}/requirements": {
+      "get": {
+        "operationId": "listRequirements",
+        "summary": "List requirements for specific event",
+        "tags": ["Requirements"],
+        "parameters": [
+          {
+            "name": "eventid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of requirements",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Requirement"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/requirements": {
+      "post": {
+        "operationId": "createRequirement",
+        "summary": "Create a new requirement",
+        "tags": ["Requirements"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequirementInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Requirement created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Requirement"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/requirements/{id}": {
+      "patch": {
+        "operationId": "updateRequirement",
+        "summary": "Update requirement",
+        "tags": ["Requirements"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequirementUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Requirement updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Requirement"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteRequirement",
+        "summary": "Delete requirement (cascades to assignments)",
+        "tags": ["Requirements"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requirement deleted"
+          }
+        }
+      }
+    },
+    "/assignments": {
+      "get": {
+        "operationId": "listAssignments",
+        "summary": "List all assignments",
+        "tags": ["Assignments"],
+        "responses": {
+          "200": {
+            "description": "Array of all assignments",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Assignment"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createAssignment",
+        "summary": "Create a new assignment (CRITICAL - requires all 25 fields)",
+        "tags": ["Assignments"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignmentInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Assignment created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assignment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input - must include all 25 fields"
+          },
+          "500": {
+            "description": "Missing required fields"
+          }
+        }
+      }
+    },
+    "/events/{eventid}/assignments": {
+      "get": {
+        "operationId": "listAssignmentsForEvent",
+        "summary": "List assignments for specific event",
+        "tags": ["Assignments"],
+        "parameters": [
+          {
+            "name": "eventid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of assignments",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Assignment"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assignments/{id}": {
+      "patch": {
+        "operationId": "updateAssignment",
+        "summary": "Update assignment",
+        "tags": ["Assignments"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignmentUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Assignment updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assignment"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteAssignment",
+        "summary": "Delete assignment",
+        "tags": ["Assignments"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Assignment deleted"
+          }
+        }
+      }
+    },
+    "/settings": {
+      "get": {
+        "operationId": "getSettings",
+        "summary": "Get app settings",
+        "tags": ["Settings"],
+        "responses": {
+          "200": {
+            "description": "Current settings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Settings"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateSettings",
+        "summary": "Update app settings",
+        "tags": ["Settings"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SettingsUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Settings updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Settings"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings/positions": {
+      "get": {
+        "operationId": "listPositions",
+        "summary": "List all positions",
+        "tags": ["Positions"],
+        "responses": {
+          "200": {
+            "description": "Array of positions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Position"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createPosition",
+        "summary": "Create a new position",
+        "tags": ["Positions"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": ["name"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Position created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Position"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings/positions/{name}": {
+      "delete": {
+        "operationId": "deletePosition",
+        "summary": "Delete position (fails if in use)",
+        "tags": ["Positions"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Position deleted"
+          },
+          "409": {
+            "description": "Position in use by requirements"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Event": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "clientname": {
+            "type": "string"
+          },
+          "clientcontact": {
+            "type": "string"
+          },
+          "clientphone": {
+            "type": "string"
+          },
+          "clientemail": {
+            "type": "string"
+          },
+          "clientaddress": {
+            "type": "string"
+          },
+          "ponumber": {
+            "type": "string"
+          },
+          "startdate": {
+            "type": "string",
+            "format": "date"
+          },
+          "enddate": {
+            "type": "string",
+            "format": "date"
+          },
+          "totaltechpayout": {
+            "type": "number",
+            "format": "double"
+          },
+          "totallaborcost": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalcustomerbilling": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": ["id", "name"]
+      },
+      "EventInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "clientname": {
+            "type": "string"
+          },
+          "clientcontact": {
+            "type": "string"
+          },
+          "clientphone": {
+            "type": "string"
+          },
+          "clientemail": {
+            "type": "string"
+          },
+          "clientaddress": {
+            "type": "string"
+          },
+          "ponumber": {
+            "type": "string"
+          },
+          "startdate": {
+            "type": "string",
+            "format": "date"
+          },
+          "enddate": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": ["name"]
+      },
+      "EventUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "clientname": {
+            "type": "string"
+          },
+          "clientcontact": {
+            "type": "string"
+          },
+          "clientphone": {
+            "type": "string"
+          },
+          "clientemail": {
+            "type": "string"
+          },
+          "clientaddress": {
+            "type": "string"
+          },
+          "ponumber": {
+            "type": "string"
+          },
+          "startdate": {
+            "type": "string",
+            "format": "date"
+          },
+          "enddate": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "Technician": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "ratetype": {
+            "type": "string",
+            "enum": ["hourly", "half-day", "full-day"]
+          },
+          "techhourlyrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "techhalfdayrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "techfulldayrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "billhourlyrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "billhalfdayrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "billfulldayrate": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": ["id", "name"]
+      },
+      "TechnicianInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "ratetype": {
+            "type": "string",
+            "enum": ["hourly", "half-day", "full-day"]
+          },
+          "techhourlyrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "techhalfdayrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "techfulldayrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "billhourlyrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "billhalfdayrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "billfulldayrate": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": ["name"]
+      },
+      "TechnicianUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "ratetype": {
+            "type": "string",
+            "enum": ["hourly", "half-day", "full-day"]
+          },
+          "techhourlyrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "techhalfdayrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "techfulldayrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "billhourlyrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "billhalfdayrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "billfulldayrate": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "Requirement": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "eventid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "requirementdate": {
+            "type": "string",
+            "format": "date"
+          },
+          "requirementenddate": {
+            "type": "string",
+            "format": "date"
+          },
+          "roomorlocation": {
+            "type": "string"
+          },
+          "settime": {
+            "type": "string",
+            "format": "time"
+          },
+          "starttime": {
+            "type": "string",
+            "format": "time"
+          },
+          "endtime": {
+            "type": "string",
+            "format": "time"
+          },
+          "striketime": {
+            "type": "string",
+            "format": "time"
+          },
+          "position": {
+            "type": "string"
+          },
+          "techsneeded": {
+            "type": "integer",
+            "default": 1
+          }
+        },
+        "required": ["id", "eventid"]
+      },
+      "RequirementInput": {
+        "type": "object",
+        "properties": {
+          "eventid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "requirementdate": {
+            "type": "string",
+            "format": "date"
+          },
+          "requirementenddate": {
+            "type": "string",
+            "format": "date"
+          },
+          "roomorlocation": {
+            "type": "string"
+          },
+          "settime": {
+            "type": "string",
+            "format": "time"
+          },
+          "starttime": {
+            "type": "string",
+            "format": "time"
+          },
+          "endtime": {
+            "type": "string",
+            "format": "time"
+          },
+          "striketime": {
+            "type": "string",
+            "format": "time"
+          },
+          "position": {
+            "type": "string"
+          },
+          "techsneeded": {
+            "type": "integer",
+            "default": 1
+          }
+        },
+        "required": ["eventid", "starttime", "endtime"]
+      },
+      "RequirementUpdate": {
+        "type": "object",
+        "properties": {
+          "requirementdate": {
+            "type": "string",
+            "format": "date"
+          },
+          "requirementenddate": {
+            "type": "string",
+            "format": "date"
+          },
+          "roomorlocation": {
+            "type": "string"
+          },
+          "settime": {
+            "type": "string",
+            "format": "time"
+          },
+          "starttime": {
+            "type": "string",
+            "format": "time"
+          },
+          "endtime": {
+            "type": "string",
+            "format": "time"
+          },
+          "striketime": {
+            "type": "string",
+            "format": "time"
+          },
+          "position": {
+            "type": "string"
+          },
+          "techsneeded": {
+            "type": "integer"
+          }
+        }
+      },
+      "Assignment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "eventid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "technicianid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "requirementid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "position": {
+            "type": "string"
+          },
+          "roomorlocation": {
+            "type": "string"
+          },
+          "hoursworked": {
+            "type": "number",
+            "format": "double"
+          },
+          "basehours": {
+            "type": "number",
+            "format": "double"
+          },
+          "othours": {
+            "type": "number",
+            "format": "double"
+          },
+          "dothours": {
+            "type": "number",
+            "format": "double"
+          },
+          "ratetype": {
+            "type": "string"
+          },
+          "techhourlyrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "techhalfdayrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "techfulldayrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "billhourlyrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "billhalfdayrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "billfulldayrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "calculatedpay": {
+            "type": "number",
+            "format": "double"
+          },
+          "customerbill": {
+            "type": "number",
+            "format": "double"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "assignmentdate": {
+            "type": "string",
+            "format": "date"
+          },
+          "starttime": {
+            "type": "string",
+            "format": "time"
+          },
+          "endtime": {
+            "type": "string",
+            "format": "time"
+          }
+        },
+        "required": ["id", "eventid", "technicianid"]
+      },
+      "AssignmentInput": {
+        "type": "object",
+        "properties": {
+          "eventid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "technicianid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "requirementid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "position": {
+            "type": "string"
+          },
+          "roomorlocation": {
+            "type": "string"
+          },
+          "hoursworked": {
+            "type": "number",
+            "format": "double"
+          },
+          "basehours": {
+            "type": "number",
+            "format": "double"
+          },
+          "othours": {
+            "type": "number",
+            "format": "double"
+          },
+          "dothours": {
+            "type": "number",
+            "format": "double"
+          },
+          "ratetype": {
+            "type": "string"
+          },
+          "techhourlyrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "techhalfdayrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "techfulldayrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "billhourlyrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "billhalfdayrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "billfulldayrate": {
+            "type": "number",
+            "format": "double"
+          },
+          "calculatedpay": {
+            "type": "number",
+            "format": "double"
+          },
+          "customerbill": {
+            "type": "number",
+            "format": "double"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "assignmentdate": {
+            "type": "string",
+            "format": "date"
+          },
+          "starttime": {
+            "type": "string",
+            "format": "time"
+          },
+          "endtime": {
+            "type": "string",
+            "format": "time"
+          }
+        },
+        "required": ["eventid", "technicianid", "hoursworked", "basehours", "othours", "dothours", "ratetype", "techhourlyrate", "techhalfdayrate", "techfulldayrate", "billhourlyrate", "billhalfdayrate", "billfulldayrate", "calculatedpay", "customerbill"]
+      },
+      "AssignmentUpdate": {
+        "type": "object",
+        "properties": {
+          "position": {
+            "type": "string"
+          },
+          "roomorlocation": {
+            "type": "string"
+          },
+          "hoursworked": {
+            "type": "number",
+            "format": "double"
+          },
+          "basehours": {
+            "type": "number",
+            "format": "double"
+          },
+          "othours": {
+            "type": "number",
+            "format": "double"
+          },
+          "dothours": {
+            "type": "number",
+            "format": "double"
+          },
+          "calculatedpay": {
+            "type": "number",
+            "format": "double"
+          },
+          "customerbill": {
+            "type": "number",
+            "format": "double"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "assignmentdate": {
+            "type": "string",
+            "format": "date"
+          },
+          "starttime": {
+            "type": "string",
+            "format": "time"
+          },
+          "endtime": {
+            "type": "string",
+            "format": "time"
+          }
+        }
+      },
+      "Settings": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "halfdayhours": {
+            "type": "integer",
+            "default": 5
+          },
+          "fulldayhours": {
+            "type": "integer",
+            "default": 10
+          },
+          "otthreshold": {
+            "type": "integer",
+            "default": 10
+          },
+          "dotthreshold": {
+            "type": "integer",
+            "default": 20
+          },
+          "dotstarthour": {
+            "type": "integer",
+            "default": 20
+          },
+          "techbaserate": {
+            "type": "number",
+            "format": "double",
+            "default": 50
+          },
+          "customerbaserate": {
+            "type": "number",
+            "format": "double",
+            "default": 75
+          }
+        }
+      },
+      "SettingsUpdate": {
+        "type": "object",
+        "properties": {
+          "halfdayhours": {
+            "type": "integer"
+          },
+          "fulldayhours": {
+            "type": "integer"
+          },
+          "otthreshold": {
+            "type": "integer"
+          },
+          "dotthreshold": {
+            "type": "integer"
+          },
+          "dotstarthour": {
+            "type": "integer"
+          },
+          "techbaserate": {
+            "type": "number",
+            "format": "double"
+          },
+          "customerbaserate": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "Position": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": ["name"]
+      }
+    }
+  }
+}
