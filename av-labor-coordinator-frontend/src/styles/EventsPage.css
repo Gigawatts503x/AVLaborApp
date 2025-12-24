@@ -1,0 +1,7 @@
+.events-container { max-width: 1200px; margin: 0 auto; }
+.events-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+.event-form { background: white; padding: 2rem; border-radius: 0.75rem; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.events-list { background: white; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
+.events-table { width: 100%; border-collapse: collapse; }
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+.form-actions { display: flex; gap: 1rem; margin-top: 2rem; }

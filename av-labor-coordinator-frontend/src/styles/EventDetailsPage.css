@@ -1,0 +1,10 @@
+.event-details-container { max-width: 1200px; margin: 0 auto; }
+.event-header { background: white; padding: 2rem; border-radius: 0.75rem; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.event-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+.event-totals { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+.total-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 0.75rem; text-align: center; }
+.total-amount { font-size: 2rem; font-weight: 700; }
+.assignments-section { background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+.assignment-form { background: #f8f9fa; padding: 2rem; border-radius: 0.75rem; margin-bottom: 2rem; }
+.assignments-table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; }

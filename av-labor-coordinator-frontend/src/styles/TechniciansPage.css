@@ -1,0 +1,7 @@
+.technicians-container { max-width: 1200px; margin: 0 auto; }
+.technicians-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+.tech-form { background: white; padding: 2rem; border-radius: 0.75rem; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.form-section { margin-bottom: 2rem; }
+.form-section h3 { margin-bottom: 1rem; color: #333; }
+.technicians-list { background: white; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
+.technicians-table { width: 100%; border-collapse: collapse; }
